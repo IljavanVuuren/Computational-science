@@ -1,6 +1,3 @@
-# To use this program using a terminal:
-# python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>
-
 import math
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -13,7 +10,7 @@ infected = {}
 infected_over_time_1 = []
 
 # Initializes the graph with amount of infected as well as susceptible.
-def initialise_network(start_infected, N, k):
+def initialize_network(start_infected, N, k):
     # Create a graph with N and K.
     network = nx.fast_gnp_random_graph(N, k / N)
 
@@ -49,12 +46,14 @@ def timestep(graph, amount_infected, infect_chance):
 if __name__ == "__main__":  
 
     # Read parameters if they are all given.
-    if len(sys.argv) == 6:
+    if len(sys.argv) == 8:
         N = int(sys.argv[1])  # Number of nodes.
         k = int(sys.argv[2])  # Connectivity.
         start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
         infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
-        steps = int(sys.argv[5])  # Amount of steps that the simulation runs.
+        start_vaccined = int(sys.argv[5])
+        vaccination_rate = int(sys.argv[6])  # Amount of persons vaccined per step.
+        steps = int(sys.argv[7])  # Amount of steps that the simulation runs.
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
@@ -62,13 +61,15 @@ if __name__ == "__main__":
         k = 5
         start_infected = amount_infected = 10**4
         infect_chance = 0.01
+        start_vaccined = 0
+        vaccination_rate = 10
         steps = 100
     # Print error message if the amound of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>")
+        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_vaccined> <vaccination_rate> <steps>")
         sys.exit()
 
-    G = initialise_network(start_infected, N, k)
+    G = initialize_network(start_infected, N, k)
 
     for step in range(steps):
         normalized_infected = amount_infected/N
@@ -76,7 +77,7 @@ if __name__ == "__main__":
         amount_infected = timestep(G, amount_infected, infect_chance)
 
     plt.plot(infected_over_time_1, label='Important info here')
-    plt.xlabel('time')
+    plt.xlabel('time (steps)')
     plt.ylabel('infected')
     plt.legend(loc='upper left')
 

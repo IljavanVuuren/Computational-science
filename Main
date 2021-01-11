@@ -1,0 +1,65 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+import random
+
+# Initializes the graph with amount of infected as well as susceptible.
+def initialise_network(start_infected, N, k):
+    # Create a graph with N and K.
+    network = nx.fast_gnp_random_graph(N, k / N)
+
+    # Changes all to susceptible.
+    for i in range(10**5):
+        infected[i] = False
+
+    # Takes a random sample of size start_infected and makes them infected.
+    random_sample = random.sample(list(infected), start_infected)
+
+    for sample in random_sample:
+        infected[sample] = True
+
+    return graph
+
+# Does one timestep.
+def timestep(graph, amount_infected, infect_chance):
+    # Checks if infected if true does action.
+    for key, value in infected.items():
+        if value:
+            # Takes all neighbors of the node.
+            neighbors = nx.all_neighbors(graph, key)
+            for neighbor in neighbors:
+                if not infected[neighbor]:
+                    # do a random chance of infecting him and add one infected to counter.
+                    if infect_chance > random.uniform(0, 1):
+                        infected[neighbor] = True
+                        amount_infected += 1
+    return amount_infected
+
+if __name__ == "__main__":
+    # Initialize variables for first case. N is number of nodes, k is connectivity.
+    N = 10**5
+    k = 5
+    infect_chance = 0.01
+    start_infected = 10**4
+
+    G = initialise_graph(start_infected, N, k)
+
+    for step in range(100):
+        normalized_infected = amount_infected/N
+        infected_over_time_1.append(normalized_infected)
+        amount_infected = timestep(G, amount_infected, infect_chance)
+
+    # Initialize variables for second case.
+    N = 10**5
+    k = 0.8
+    infect_chance = 0.1
+
+    G = initialise_graph(start_infected, N, k)
+
+    amount_infected = 10**4
+
+    for step in range(100):
+        normalized_infected = amount_infected/N
+        infected_over_time_2.append(normalized_infected)
+        amount_infected = timestep(G, amount_infected, infect_chance)

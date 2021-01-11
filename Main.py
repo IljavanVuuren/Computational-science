@@ -7,6 +7,8 @@ import random
 # Initializing arrays
 infected = {}
 infected_over_time_1 = []
+
+
 # start_infected should be the same as amount_infected
 start_infected = 10**4
 amount_infected = 10**4

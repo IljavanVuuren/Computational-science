@@ -4,6 +4,13 @@ import numpy as np
 import math
 import random
 
+# Initializing arrays
+infected = {}
+infected_over_time_1 = []
+# start_infected should be the same as amount_infected
+start_infected = 10**4
+amount_infected = 10**4
+
 # Initializes the graph with amount of infected as well as susceptible.
 def initialise_network(start_infected, N, k):
     # Create a graph with N and K.
@@ -19,7 +26,7 @@ def initialise_network(start_infected, N, k):
     for sample in random_sample:
         infected[sample] = True
 
-    return graph
+    return network
 
 # Does one timestep.
 def timestep(graph, amount_infected, infect_chance):
@@ -43,23 +50,16 @@ if __name__ == "__main__":
     infect_chance = 0.01
     start_infected = 10**4
 
-    G = initialise_graph(start_infected, N, k)
+    G = initialise_network(start_infected, N, k)
 
     for step in range(100):
         normalized_infected = amount_infected/N
         infected_over_time_1.append(normalized_infected)
         amount_infected = timestep(G, amount_infected, infect_chance)
 
-    # Initialize variables for second case.
-    N = 10**5
-    k = 0.8
-    infect_chance = 0.1
+    plt.plot(infected_over_time_1, label='Important info here')
+    plt.xlabel('time')
+    plt.ylabel('infected')
+    plt.legend(loc='upper left')
 
-    G = initialise_graph(start_infected, N, k)
-
-    amount_infected = 10**4
-
-    for step in range(100):
-        normalized_infected = amount_infected/N
-        infected_over_time_2.append(normalized_infected)
-        amount_infected = timestep(G, amount_infected, infect_chance)
+    plt.show()

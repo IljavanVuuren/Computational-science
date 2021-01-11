@@ -1,17 +1,16 @@
-import networkx as nx
-import matplotlib.pyplot as plt
-import numpy as np
+# To use this program using a terminal:
+# python main.py <nodes> <connectivity> <initial_infected> <infection_change>
+
 import math
+import matplotlib.pyplot as plt
+import networkx as nx
+import numpy as np
 import random
+import sys
 
 # Initializing arrays
 infected = {}
 infected_over_time_1 = []
-
-
-# start_infected should be the same as amount_infected
-start_infected = 10**4
-amount_infected = 10**4
 
 # Initializes the graph with amount of infected as well as susceptible.
 def initialise_network(start_infected, N, k):
@@ -30,6 +29,7 @@ def initialise_network(start_infected, N, k):
 
     return network
 
+
 # Does one timestep.
 def timestep(graph, amount_infected, infect_chance):
     # Checks if infected if true does action.
@@ -45,12 +45,26 @@ def timestep(graph, amount_infected, infect_chance):
                         amount_infected += 1
     return amount_infected
 
-if __name__ == "__main__":
-    # Initialize variables for first case. N is number of nodes, k is connectivity.
-    N = 10**5
-    k = 5
-    infect_chance = 0.01
-    start_infected = 10**4
+
+if __name__ == "__main__":  
+
+    # Read parameters if they are all given.
+    if len(sys.argv) == 5:
+        N = int(sys.argv[1])  # Number of nodes.
+        k = int(sys.argv[2])  # Connectivity.
+        start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
+        infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
+    # Use default parameters if none are given.
+    elif len(sys.argv) == 1:
+        print("Using default parameters.")
+        N = 10**5
+        k = 5
+        start_infected = amount_infected = 10**4
+        infect_chance = 0.01
+    # Print error message if the amound of given parameters is incorrect.
+    else:
+        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_change>")
+        sys.exit()
 
     G = initialise_network(start_infected, N, k)
 

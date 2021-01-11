@@ -8,13 +8,13 @@ import numpy as np
 import random
 import sys
 
-# Initializing arrays
+# Initializing arrays for processing.
 infected = {}
 infected_over_time_1 = []
 
 # Initializes the graph with amount of infected as well as susceptible.
-def initialise_network(start_infected, N, k):
-    # Create a graph with N and K.
+def initialize_network(start_infected, N, k):
+    # Create a graph with N nodes and connectivity K.
     network = nx.fast_gnp_random_graph(N, k / N)
 
     # Changes all to susceptible.
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>")
         sys.exit()
 
-    G = initialise_network(start_infected, N, k)
+    G = initialize_network(start_infected, N, k)
 
     for step in range(steps):
         normalized_infected = amount_infected/N

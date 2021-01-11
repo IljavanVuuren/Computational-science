@@ -1,6 +1,5 @@
-
 # To use this program using a terminal:
-# python main.py <nodes> <connectivity> <initial_infected> <infection_change>
+# python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>
 
 import math
 import matplotlib.pyplot as plt
@@ -19,7 +18,7 @@ def initialise_network(start_infected, N, k):
     network = nx.fast_gnp_random_graph(N, k / N)
 
     # Changes all to susceptible.
-    for i in range(10**5):
+    for i in range(N):
         infected[i] = False
 
     # Takes a random sample of size start_infected and makes them infected.
@@ -50,11 +49,12 @@ def timestep(graph, amount_infected, infect_chance):
 if __name__ == "__main__":  
 
     # Read parameters if they are all given.
-    if len(sys.argv) == 5:
+    if len(sys.argv) == 6:
         N = int(sys.argv[1])  # Number of nodes.
         k = int(sys.argv[2])  # Connectivity.
         start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
         infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
+        steps = int(sys.argv[5])  # Amount of steps that the simulation runs.
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
@@ -62,14 +62,15 @@ if __name__ == "__main__":
         k = 5
         start_infected = amount_infected = 10**4
         infect_chance = 0.01
+        steps = 100
     # Print error message if the amound of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_change>")
+        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>")
         sys.exit()
 
     G = initialise_network(start_infected, N, k)
 
-    for step in range(100):
+    for step in range(steps):
         normalized_infected = amount_infected/N
         infected_over_time_1.append(normalized_infected)
         amount_infected = timestep(G, amount_infected, infect_chance)

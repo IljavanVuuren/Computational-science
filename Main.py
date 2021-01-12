@@ -8,9 +8,9 @@ import sys
 # Initializing arrays
 infected = {}
 unvaccinated = []
-vaccinated = {}  # Also define vaccined dict for least time complexity.
+vaccinated = {}  # Also define vaccinated dict for least time complexity.
 infected_over_time_1 = []
-n_neighbors = []  # Amound of neighbours for every node.
+n_neighbors = []  # Amount of neighbours for every node.
 
 # Initializes the graph with amount of infected as well as susceptible.
 def initialize_network(start_infected, N, k):

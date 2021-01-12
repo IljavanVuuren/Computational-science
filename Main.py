@@ -10,6 +10,7 @@ infected = {}
 unvaccined = []
 vaccined = {}  # Also define vaccined dict for least time complexity.
 infected_over_time_1 = []
+n_neighbors = []  # Amound of neighbours for every node.
 
 # Initializes the graph with amount of infected as well as susceptible.
 def initialize_network(start_infected, N, k):
@@ -26,6 +27,16 @@ def initialize_network(start_infected, N, k):
     random_sample = random.sample(list(infected), start_infected)
     for sample in random_sample:
         infected[sample] = True
+
+    if vaccination_strategy == "connections":
+        def sort_n_neighbors(e):
+            node, n = e
+            return n
+
+        # Calculate amount of neighbours for every node.
+        for i in range(N):
+            n_neighbors.append((i, len(list(nx.all_neighbors(network, i)))))
+        n_neighbors.sort(key=sort_n_neighbors)
 
     return network
 
@@ -52,14 +63,16 @@ def timestep(graph, amount_infected, infect_chance):
             unvaccined.remove(sample)
             vaccined[sample] = True
     elif vaccination_strategy == "connections":
-        pass
-
+        for i in range(vaccination_rate):
+            index, _ = n_neighbors.pop()
+            unvaccined.remove(index)
+            vaccined[index] = True
 
     return amount_infected
 
 
 if __name__ == "__main__":
-    vaccination_strategy = "random"
+    vaccination_strategy = "connections"
 
     # Read parameters if they are all given.
     if len(sys.argv) == 8:
@@ -86,6 +99,7 @@ if __name__ == "__main__":
         sys.exit()
 
     G = initialize_network(start_infected, N, k)
+    print("Initialization finished.")
 
     for step in range(steps):
         normalized_infected = amount_infected/N

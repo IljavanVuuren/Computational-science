@@ -7,8 +7,8 @@ import sys
 
 # Initializing arrays
 infected = {}
-unvaccinated = []
-vaccinated = {}  # Also define vaccinated dict for least time complexity.
+unvaccined = []
+vaccined = {}  # Also define vaccinated dict for least time complexity.
 infected_over_time_1 = []
 n_neighbors = []  # Amount of neighbours for every node.
 

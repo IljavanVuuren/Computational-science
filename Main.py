@@ -5,14 +5,17 @@ import numpy as np
 import random
 import sys
 
-# Initializing arrays
-infected = {}
+# Initializing dicts that keep track of node states.
 susceptible = {}
-immune = {}  # Also define immune dict for least time complexity.
-infected_over_time_1 = []
-n_neighbors = []  # Amount of neighbours for every node.
+infected = {}
+immune = {}
 
-# Initializes the graph with amount of infected as well as susceptible.
+n_neighbors = []  # Amount of neighbours for every node (for vaccine strategy).
+
+# Lists for storing and plotting data.
+infected_over_time_1 = []
+
+# Initializes the graph.
 def initialize_network():
     # Create a graph with N and K.
     network = nx.fast_gnp_random_graph(N, k / N)
@@ -29,6 +32,9 @@ def initialize_network():
         susceptible[node] = False
         infected[node] = True
 
+    # Add to data list.
+    infected_over_time_1.append(amount_infected/N)
+
     if vaccination_strategy == "connections":
         def sort_n_neighbors(e):
             node, n = e
@@ -43,13 +49,15 @@ def initialize_network():
 
 
 # Does one timestep (15 days).
-def timestep(graph):
+def timestep():
+    global graph
+    global amount_infected
 
     # Infect (move from susceptible to infected).
-    for key, value in infected.items():
-        if value:
+    for node, infctd in infected.items():
+        if infctd:
             # Takes all neighbors of the node.
-            neighbors = nx.all_neighbors(graph, key)
+            neighbors = nx.all_neighbors(graph, node)
             for neighbor in neighbors:
                 if susceptible[neighbor]:
                     # do a random chance of infecting him and add one infected to counter.
@@ -57,17 +65,16 @@ def timestep(graph):
                         susceptible[neighbor] = False
                         infected[neighbor] = True
 
-                        global amount_infected
                         amount_infected += 1
 
             # Immune (move from infected to immune).
-            infected[key] = False
-            immune[key] = True
+            infected[node] = False
+            immune[node] = True
 
     # Vaccine (move from susceptible to immune).
     if vaccination_strategy == "random":
         # Takes a random sample of size vaccination_rate and makes them immune.
-        random_sample = random.sample(list({k: v for k, v in susceptible.items() if v == True}), vaccination_rate)
+        random_sample = random.sample([node for node, sscptbl in susceptible.items() if sscptbl], vaccination_rate)
         for node in random_sample:
             susceptible[node] = False
             immune[node] = True
@@ -83,7 +90,7 @@ def timestep(graph):
 
 
 if __name__ == "__main__":
-    vaccination_strategy = "connections"
+    vaccination_strategy = "random"
 
     # Read parameters if they are all given.
     if len(sys.argv) == 8:
@@ -97,30 +104,28 @@ if __name__ == "__main__":
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
-        N = 10**5
-        k = 9
-        start_infected = amount_infected = 10**3
-        infect_chance = 0.1
+        N = 1000000
+        k = 5
+        start_infected = amount_infected = 1
+        infect_chance = 0.5
         start_immune = 10**2
-        vaccination_rate = 1
-        steps = 100
+        vaccination_rate = 10
+        steps = 10
     # Print error message if the amound of given parameters is incorrect.
     else:
         print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <steps>")
         exit()
 
-    G = initialize_network()
+    graph = initialize_network()
     print("Initialization finished.")
 
     for step in range(steps):
-        normalized_infected = amount_infected/N
-        infected_over_time_1.append(normalized_infected)
-        print("Step", step)
-        timestep(G)
-        print(amount_infected)
+        timestep()
+        infected_over_time_1.append(amount_infected/N)
+    
 
     plt.plot(infected_over_time_1, label='Important info here')
-    plt.xlabel('time (steps)')
+    plt.xlabel('time (steps x 15 days)')
     plt.ylabel('infected')
     plt.legend(loc='lower right')
 

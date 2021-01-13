@@ -39,21 +39,25 @@ def initialize_network():
         susceptible[node] = False
         immune[node] = True
 
+    # Initialize n_neighbors list with the amount of neighbors per node.
     if vaccination_strategy == "connections":
+        # Function to sort nodes on amount of neighbors.
         def sort_n_neighbors(e):
             node, n = e
             return n
 
-        # Calculate amount of neighbours for every node and sort.
+        # Calculate amount of neighbours for every node and append to list.
         for i in range(N):
             n_neighbors.append((i, len(list(nx.all_neighbors(network, i)))))
+        # Sort list.
         n_neighbors.sort(key=sort_n_neighbors)
 
     return network
 
 
-# Does one timestep (15 days).
+# Does one timestep and returns the amount of infected nodes for the timestep.
 def timestep():
+    # Define which global variables to use for writing to.
     global graph
     global amount_infected
     global amount_vaccined
@@ -61,7 +65,7 @@ def timestep():
 
     infected_this_step = 0
 
-    # Infect (move from susceptible to infected).
+    # Move nodes from susceptible to infected.
     for node, infctd in infected.items():
         if infctd:
             # Takes all neighbors of the node.
@@ -76,12 +80,13 @@ def timestep():
                         amount_infected += 1
                         infected_this_step += 1
 
-            # Immune (move from infected to immune).
+            # Move node from infected to immune.
             infected[node] = False
             immune[node] = True
+
             amount_immune += 1
 
-    # Vaccine (move from susceptible to immune).
+    # Move nodes from susceptible to immune depending on vaccination strategy.
     if vaccination_strategy == "random":
         # Takes a random sample of size vaccination_rate and makes them immune.
         susceptibles = [node for node, sscptbl in susceptible.items() if sscptbl]
@@ -93,6 +98,7 @@ def timestep():
         for node in random_susceptibles:
             susceptible[node] = False
             immune[node] = True
+
             amount_vaccined += 1
             amount_immune += 1
     elif vaccination_strategy == "connections":
@@ -103,13 +109,14 @@ def timestep():
             if susceptible[node]:
                 susceptible[node] = False
                 immune[node] = True
+
                 vaccined_step += 1
                 amount_vaccined += 1
                 amount_immune += 1
 
     return infected_this_step
 
-
+# Set parameters, initialize network, do timesteps and show plots.
 if __name__ == "__main__":
     # Read parameters if they are all given.
     if len(sys.argv) == 9:
@@ -132,11 +139,12 @@ if __name__ == "__main__":
         vaccination_rate = 1000
         vaccination_strategy = "random"
         steps = 10
-    # Print error message if the amound of given parameters is incorrect.
+    # Print error message if the amount of given parameters is incorrect.
     else:
         print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <vaccination_strategy> <steps>")
         exit()
 
+    # Set parameters independent of input.
     amount_vaccined = 0
 
     graph = initialize_network()
@@ -148,13 +156,14 @@ if __name__ == "__main__":
     vaccined_over_time = [amount_vaccined/N]
     immune_over_time = [amount_immune/N]
 
+    # Do timesteps and store data in lists.
     for step in range(steps):
         infected_per_step.append(timestep()/N)
         infected_over_time.append(amount_infected/N)
         vaccined_over_time.append(amount_vaccined/N)
         immune_over_time.append(amount_immune/N)
-    
 
+    # Show the plots.
     plt.plot(infected_over_time, label='Infected over time')
     plt.plot(infected_per_step, label='Infected per step')
     plt.plot(vaccined_over_time, label='Vaccined over time')

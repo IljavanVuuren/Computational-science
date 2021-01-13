@@ -12,10 +12,6 @@ immune = {}
 
 n_neighbors = []  # Amount of neighbours for every node (for vaccine strategy).
 
-# Lists for storing and plotting data.
-infected_over_time = []
-vaccined_over_time = []
-
 # Initializes the graph.
 def initialize_network():
     # Create a graph with of size N and cardinality k.
@@ -61,6 +57,9 @@ def timestep():
     global graph
     global amount_infected
     global amount_vaccined
+    global amount_immune
+
+    infected_this_step = 0
 
     # Infect (move from susceptible to infected).
     for node, infctd in infected.items():
@@ -75,10 +74,12 @@ def timestep():
                         infected[neighbor] = True
 
                         amount_infected += 1
+                        infected_this_step += 1
 
             # Immune (move from infected to immune).
             infected[node] = False
             immune[node] = True
+            amount_immune += 1
 
     # Vaccine (move from susceptible to immune).
     if vaccination_strategy == "random":
@@ -93,6 +94,7 @@ def timestep():
             susceptible[node] = False
             immune[node] = True
             amount_vaccined += 1
+            amount_immune += 1
     elif vaccination_strategy == "connections":
         # Keep track of how many nodes are vaccined this step.
         vaccined_step = 0
@@ -103,6 +105,9 @@ def timestep():
                 immune[node] = True
                 vaccined_step += 1
                 amount_vaccined += 1
+                amount_immune += 1
+
+    return infected_this_step
 
 
 if __name__ == "__main__":
@@ -112,7 +117,7 @@ if __name__ == "__main__":
         k = int(sys.argv[2])  # Connectivity.
         start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
         infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
-        start_immune = int(sys.argv[5])  # Amount of persons immune when the simulation starts.
+        start_immune = amount_immune = int(sys.argv[5])  # Amount of persons immune when the simulation starts.
         vaccination_rate = int(sys.argv[6])  # Amount of persons vaccined per step.
         vaccination_strategy = str(sys.argv[7])  # Vaccination strategy that is used.
         steps = int(sys.argv[8])  # Amount of steps that the simulation runs.
@@ -120,11 +125,11 @@ if __name__ == "__main__":
     elif len(sys.argv) == 1:
         print("Using default parameters.")
         N = 100000
-        k = 5
-        start_infected = amount_infected = 1
-        infect_chance = 0.5
-        start_immune = 10**2
-        vaccination_rate = 10000
+        k = 10
+        start_infected = amount_infected = 1000
+        infect_chance = 0.1
+        start_immune = amount_immune = 0
+        vaccination_rate = 1000
         vaccination_strategy = "random"
         steps = 10
     # Print error message if the amound of given parameters is incorrect.
@@ -137,20 +142,25 @@ if __name__ == "__main__":
     graph = initialize_network()
     print("Initialization finished.")
 
-    # Add to data list.
-    infected_over_time.append(amount_infected/N)
-    vaccined_over_time.append(amount_vaccined/N)
+    # Lists for storing and plotting data.
+    infected_over_time = [amount_infected/N]
+    infected_per_step = [amount_infected/N]
+    vaccined_over_time = [amount_vaccined/N]
+    immune_over_time = [amount_immune/N]
 
     for step in range(steps):
-        timestep()
+        infected_per_step.append(timestep()/N)
         infected_over_time.append(amount_infected/N)
         vaccined_over_time.append(amount_vaccined/N)
+        immune_over_time.append(amount_immune/N)
     
 
     plt.plot(infected_over_time, label='Infected over time')
+    plt.plot(infected_per_step, label='Infected per step')
     plt.plot(vaccined_over_time, label='Vaccined over time')
+    plt.plot(immune_over_time, label='Immune over time')
     plt.xlabel('time (steps x 15 days)')
     plt.ylabel('infected')
-    plt.legend(loc='lower right')
+    plt.legend()
 
     plt.show()

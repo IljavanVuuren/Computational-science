@@ -7,8 +7,8 @@ import sys
 
 # Initializing arrays
 infected = {}
-unvaccined = []
-vaccined = {}  # Also define vaccined dict for least time complexity.
+susceptible = {}
+immune = {}  # Also define immune dict for least time complexity.
 infected_over_time_1 = []
 n_neighbors = []  # Amound of neighbours for every node.
 
@@ -20,13 +20,14 @@ def initialize_network(start_infected, N, k):
     # Changes all to susceptible.
     for i in range(N):
         infected[i] = False
-        vaccined[i] = False
-        unvaccined.append(i)
+        immune[i] = False
+        susceptible[i] = True
 
     # Takes a random sample of size start_infected and makes them infected.
     random_sample = random.sample(list(infected), start_infected)
     for sample in random_sample:
         infected[sample] = True
+        susceptible[sample] = False
 
     if vaccination_strategy == "connections":
         def sort_n_neighbors(e):
@@ -41,38 +42,45 @@ def initialize_network(start_infected, N, k):
     return network
 
 
-# Does one timestep.
+# Does one timestep (15 days).
 def timestep(graph, amount_infected, infect_chance):
-    # Checks if infected if true does action.
+
+    # Infect (move from susceptible to infected).
     for key, value in infected.items():
         if value:
             # Takes all neighbors of the node.
             neighbors = nx.all_neighbors(graph, key)
             for neighbor in neighbors:
-                if not infected[neighbor] and not vaccined[neighbor]:
+                if susceptible[neighbor]:
                     # do a random chance of infecting him and add one infected to counter.
                     if infect_chance > random.uniform(0, 1):
+                        susceptible[neighbor] = False
                         infected[neighbor] = True
                         amount_infected += 1
 
-    # Vaccine.
+            # Immune (move from infected to immune).
+            infected[key] = False
+            immune[key] = True
+
+    # Vaccine (move from susceptible to immune).
     if vaccination_strategy == "random":
-        # Takes a random sample of size vaccination_rate and makes them vaccined.
-        random_sample = random.sample(unvaccined, vaccination_rate)
+        # Takes a random sample of size vaccination_rate and makes them immune.
+        random_sample = random.sample(list({k: v for k, v in susceptible.items() if v == True}), vaccination_rate)
         for sample in random_sample:
-            unvaccined.remove(sample)
-            vaccined[sample] = True
+            susceptible[sample] = False
+            immune[sample] = True
     elif vaccination_strategy == "connections":
         for i in range(vaccination_rate):
             index, _ = n_neighbors.pop()
-            unvaccined.remove(index)
-            vaccined[index] = True
+            if susceptible[index]:
+                susceptible[index] = False
+                immune[index] = True
 
     return amount_infected
 
 
 if __name__ == "__main__":
-    vaccination_strategy = "connections"
+    vaccination_strategy = "random"
 
     # Read parameters if they are all given.
     if len(sys.argv) == 8:
@@ -80,7 +88,7 @@ if __name__ == "__main__":
         k = int(sys.argv[2])  # Connectivity.
         start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
         infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
-        start_vaccined = int(sys.argv[5])  # Amount of persons vaccined when the simulation starts.
+        start_immune = int(sys.argv[5])  # Amount of persons immune when the simulation starts.
         vaccination_rate = int(sys.argv[6])  # Amount of persons vaccined per step.
         steps = int(sys.argv[7])  # Amount of steps that the simulation runs.
     # Use default parameters if none are given.
@@ -88,15 +96,15 @@ if __name__ == "__main__":
         print("Using default parameters.")
         N = 10**5
         k = 5
-        start_infected = amount_infected = 10**4
+        start_infected = amount_infected = 10**3
         infect_chance = 0.01
-        start_vaccined = 0
-        vaccination_rate = 1000
-        steps = 100
+        start_immune = 10**2
+        vaccination_rate = 0
+        steps = 10
     # Print error message if the amound of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_vaccined> <vaccinations_per_step> <steps>")
-        sys.exit()
+        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <steps>")
+        exit()
 
     G = initialize_network(start_infected, N, k)
     print("Initialization finished.")

@@ -144,20 +144,19 @@ if __name__ == "__main__":
     elif len(sys.argv) == 1:
         print("Using default parameters.")
         N = 100000
-        k = 10
-        start_infected = amount_infected = 1000
-        infect_chance = 0.1
+        k = 8
+        start_infected = amount_infected = 100
+        infect_chance = 0.2
         start_immune = amount_immune = 0
         vaccination_rate = 1000
         vaccination_strategy = "random"
-        steps = 10
+        steps = 15
     # Print error message if the amount of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  "
+        exit("Correct way to call program with parameters:\n"
               "python main.py <nodes> <connectivity> <initial_infected> "
               "<infection_chance> <initial_immune> <vaccinations_per_step> "
               "<vaccination_strategy> <steps>")
-        exit()
 
     # Set parameters independent of input.
     amount_vaccined = 0

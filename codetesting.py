@@ -1,5 +1,10 @@
-# To use this program using a terminal:
-# python main.py <nodes> <connectivity> <initial_infected> <infection_change> <steps>
+# Project Computational Science
+# Implementation for model.
+
+# Group 16
+# Ilja van Vuuren
+# Nick Moone
+# Willem Breedveld
 
 import math
 import matplotlib.pyplot as plt
@@ -11,6 +16,7 @@ import sys
 # Initializing arrays for processing.
 infected = {}
 infected_over_time_1 = []
+
 
 # Initializes the graph with amount of infected as well as susceptible.
 def initialize_network(start_infected, N, k):

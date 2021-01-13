@@ -1,3 +1,11 @@
+# Project Computational Science
+# Implementation for model.
+
+# Group 16
+# Ilja van Vuuren
+# Nick Moone
+# Willem Breedveld
+
 import math
 import matplotlib.pyplot as plt
 import networkx as nx
@@ -12,6 +20,7 @@ immune = {}
 
 n_neighbors = []  # Amount of neighbours for every node (for vaccine strategy).
 
+
 # Initializes the graph.
 def initialize_network():
     # Create a graph with of size N and cardinality k.
@@ -24,16 +33,20 @@ def initialize_network():
         immune[i] = False
 
     # Takes a random sample of size start_infected and makes them infected.
-    susceptibles = [node for node, sscptbl in susceptible.items() if sscptbl]
-    if start_infected > len(susceptibles): exit("start_infected can not be larger than graph_size.")
+    susceptibles = [node for node, sptbl in susceptible.items() if sptbl]
+    if start_infected > len(susceptibles):
+        exit("start_infected can not be larger than graph_size.")
+
     random_susceptibles = random.sample(susceptibles, start_infected)
     for node in random_susceptibles:
         susceptible[node] = False
         infected[node] = True
 
     # Takes a random sample of size start_immune and makes them immune.
-    susceptibles = [node for node, sscptbl in susceptible.items() if sscptbl]
-    if start_immune > len(susceptibles): exit("start_immune can not be larger than graph_size - start_infected.")
+    susceptibles = [node for node, sptbl in susceptible.items() if sptbl]
+    if start_immune > len(susceptibles):
+        exit("start_immune can not be larger than graph_size-start_infected.")
+
     random_susceptibles = random.sample(susceptibles, start_immune)
     for node in random_susceptibles:
         susceptible[node] = False
@@ -71,14 +84,14 @@ def timestep():
             # Takes all neighbors of the node.
             neighbors = nx.all_neighbors(graph, node)
             for neighbor in neighbors:
-                if susceptible[neighbor]:
-                    # do a random chance of infecting him and add one infected to counter.
-                    if infect_chance > random.uniform(0, 1):
-                        susceptible[neighbor] = False
-                        infected[neighbor] = True
+                # Infect neighbor if susceptible and random change decides to.
+                if (susceptible[neighbor] and
+                        infect_chance > random.uniform(0, 1)):
+                    susceptible[neighbor] = False
+                    infected[neighbor] = True
 
-                        amount_infected += 1
-                        infected_this_step += 1
+                    amount_infected += 1
+                    infected_this_step += 1
 
             # Move node from infected to immune.
             infected[node] = False
@@ -89,7 +102,7 @@ def timestep():
     # Move nodes from susceptible to immune depending on vaccination strategy.
     if vaccination_strategy == "random":
         # Takes a random sample of size vaccination_rate and makes them immune.
-        susceptibles = [node for node, sscptbl in susceptible.items() if sscptbl]
+        susceptibles = [node for node, sptbl in susceptible.items() if sptbl]
         if vaccination_rate > len(susceptibles):
             random_susceptibles = susceptibles
         else:
@@ -141,7 +154,10 @@ if __name__ == "__main__":
         steps = 10
     # Print error message if the amount of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <vaccination_strategy> <steps>")
+        print("Correct way to call program with parameters:\n  "
+              "python main.py <nodes> <connectivity> <initial_infected> "
+              "<infection_chance> <initial_immune> <vaccinations_per_step> "
+              "<vaccination_strategy> <steps>")
         exit()
 
     # Set parameters independent of input.

@@ -96,17 +96,16 @@ def timestep():
 
 
 if __name__ == "__main__":
-    vaccination_strategy = "random"
-
     # Read parameters if they are all given.
-    if len(sys.argv) == 8:
+    if len(sys.argv) == 9:
         N = int(sys.argv[1])  # Number of nodes.
         k = int(sys.argv[2])  # Connectivity.
         start_infected = amount_infected = int(sys.argv[3])  # Amount of innitially infected nodes.
         infect_chance = float(sys.argv[4])  # Chance that one node infects the other node.
         start_immune = int(sys.argv[5])  # Amount of persons immune when the simulation starts.
         vaccination_rate = int(sys.argv[6])  # Amount of persons vaccined per step.
-        steps = int(sys.argv[7])  # Amount of steps that the simulation runs.
+        vaccination_strategy = str(sys.argv[7])  # Vaccination strategy that is used.
+        steps = int(sys.argv[8])  # Amount of steps that the simulation runs.
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
@@ -116,10 +115,11 @@ if __name__ == "__main__":
         infect_chance = 0.5
         start_immune = 10**2
         vaccination_rate = 10
+        vaccination_strategy = "random"
         steps = 10
     # Print error message if the amound of given parameters is incorrect.
     else:
-        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <steps>")
+        print("Correct way to call program with parameters:\n  python main.py <nodes> <connectivity> <initial_infected> <infection_chance> <initial_immune> <vaccinations_per_step> <vaccination_strategy> <steps>")
         exit()
 
     graph = initialize_network()

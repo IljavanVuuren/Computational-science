@@ -17,20 +17,26 @@ infected_over_time_1 = []
 
 # Initializes the graph.
 def initialize_network():
-    # Create a graph with N and K.
+    # Create a graph with of size N and cardinality k.
     network = nx.fast_gnp_random_graph(N, k / N)
 
-    # Changes all to susceptible.
+    # Make all nodes susceptible.
     for i in range(N):
         susceptible[i] = True
         infected[i] = False
         immune[i] = False
 
     # Takes a random sample of size start_infected and makes them infected.
-    random_sample = random.sample(list(susceptible), start_infected)
-    for node in random_sample:
+    random_susceptibles = random.sample([node for node, sscptbl in susceptible.items() if sscptbl], start_infected)
+    for node in random_susceptibles:
         susceptible[node] = False
         infected[node] = True
+
+    # Takes a random sample of size start_immune and makes them immune.
+    random_susceptibles = random.sample([node for node, sscptbl in susceptible.items() if sscptbl], start_immune)
+    for node in random_susceptibles:
+        susceptible[node] = False
+        immune[node] = True
 
     # Add to data list.
     infected_over_time_1.append(amount_infected/N)
@@ -74,8 +80,8 @@ def timestep():
     # Vaccine (move from susceptible to immune).
     if vaccination_strategy == "random":
         # Takes a random sample of size vaccination_rate and makes them immune.
-        random_sample = random.sample([node for node, sscptbl in susceptible.items() if sscptbl], vaccination_rate)
-        for node in random_sample:
+        random_susceptibles = random.sample([node for node, sscptbl in susceptible.items() if sscptbl], vaccination_rate)
+        for node in random_susceptibles:
             susceptible[node] = False
             immune[node] = True
     elif vaccination_strategy == "connections":
@@ -104,7 +110,7 @@ if __name__ == "__main__":
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
-        N = 1000000
+        N = 100000
         k = 5
         start_infected = amount_infected = 1
         infect_chance = 0.5

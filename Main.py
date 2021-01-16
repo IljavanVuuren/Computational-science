@@ -178,10 +178,10 @@ if __name__ == "__main__":
         immune_over_time.append(amount_immune/N)
 
     # Show the plots.
-    plt.plot(infected_over_time, label='Infected over time')
-    plt.plot(infected_per_step, label='Infected per step')
-    plt.plot(vaccined_over_time, label='Vaccined over time')
-    plt.plot(immune_over_time, label='Immune over time')
+    plt.plot(infected_over_time, label='Total infected over time')
+    plt.plot(infected_per_step, label='Getting infected per timestep')
+    plt.plot(vaccined_over_time, label='Total vaccinated over time')
+    plt.plot(immune_over_time, label='Total immune over time')
     plt.xlabel('time (steps x 15 days)')
     plt.ylabel('infected')
     plt.legend()

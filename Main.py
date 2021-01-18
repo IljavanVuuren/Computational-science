@@ -143,12 +143,13 @@ if __name__ == "__main__":
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
-        N = 100000
-        k = 8
-        start_infected = amount_infected = 100
-        infect_chance = 0.2
+        # N, start_infected and vaccination rate can be divided by 10 for faster computing.
+        N = 17400000
+        k = 2
+        start_infected = amount_infected = 140833
+        infect_chance = 0.2385
         start_immune = amount_immune = 0
-        vaccination_rate = 1000
+        vaccination_rate = 9400
         vaccination_strategy = "random"
         steps = 15
     # Print error message if the amount of given parameters is incorrect.

@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
 # Make lists to store data
 infected_list = []
 time_list = []
@@ -25,6 +28,6 @@ for t in np.arange(0, 100, steps):
 plt.plot(time_list, infected_list, label='SIR model')
 plt.xlabel('time')
 plt.ylabel('infected')
-plt.legend(loc='upper left')
+plt.legend()
 
 plt.show()

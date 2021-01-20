@@ -1,3 +1,11 @@
+# Project Computational Science
+# Numerical Method for model.
+
+# Group 16
+# Ilja van Vuuren
+# Nick Moone
+# Willem Breedveld
+
 import matplotlib.pyplot as plt
 import numpy as np
 

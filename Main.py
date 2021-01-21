@@ -125,6 +125,8 @@ def timestep():
                 vaccined_step += 1
                 amount_vaccined += 1
                 amount_immune += 1
+    else:
+        exit("Invalid vaccination strategy.")
 
     return infected_this_step
 
@@ -144,14 +146,14 @@ if __name__ == "__main__":
     elif len(sys.argv) == 1:
         print("Using default parameters.")
         # N, start_infected and vaccination rate can be divided by 10 for faster computing.
-        N = 17400000
+        N = 1740000#0
         k = 2
-        start_infected = amount_infected = 140833
-        infect_chance = 0.2385
+        start_infected = amount_infected = 14083#3
+        infect_chance = 0.35
         start_immune = amount_immune = 0
-        vaccination_rate = 9400
+        vaccination_rate = 940#0
         vaccination_strategy = "random"
-        steps = 15
+        steps = 25
     # Print error message if the amount of given parameters is incorrect.
     else:
         exit("Correct way to call program with parameters:\n"

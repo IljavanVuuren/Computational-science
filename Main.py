@@ -181,7 +181,8 @@ if __name__ == "__main__":
         immune_over_time.append(amount_immune/N)
 
         if infected_per_step[-1] == 0 and infected_per_step[-2] > 0:
-            print("0 new infections from timestep", len(infected_per_step)-1)
+            print(len(infected_per_step)-1)
+            #print("0 new infections from timestep", len(infected_per_step)-1)
             break
 
 

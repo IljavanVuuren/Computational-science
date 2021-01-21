@@ -144,14 +144,14 @@ if __name__ == "__main__":
         steps = int(sys.argv[8])  # Amount of steps that the simulation runs.
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
-        #print("Using default parameters.")
+        print("Using default parameters.")
         # N, start_infected, vaccination rate and start_immune can be divided by 10 for faster computing.
         N = 17400000
         k = 5
         start_infected = amount_infected = 140833
         infect_chance = 0.35
         start_immune = amount_immune = 2000000
-        vaccination_rate = 0#141000
+        vaccination_rate = 141000
         vaccination_strategy = "random"
         steps = 50
     # Print error message if the amount of given parameters is incorrect.
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     amount_vaccined = 0
 
     graph = initialize_network()
-    #print("Initialization finished.")
+    print("Initialization finished.")
 
     # Lists for storing and plotting data.
     infected_over_time = [amount_infected/N]
@@ -181,8 +181,7 @@ if __name__ == "__main__":
         immune_over_time.append(amount_immune/N)
 
         if infected_per_step[-1] == 0 and infected_per_step[-2] > 0:
-            #print("0 new infections from timestep", len(infected_per_step)-1)
-            print(len(infected_per_step)-1)
+            print("0 new infections from timestep", len(infected_per_step)-1)
             break
 
 

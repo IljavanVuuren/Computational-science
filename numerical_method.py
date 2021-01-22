@@ -20,6 +20,7 @@ N = 17400000
 infected = 135607
 recovered = 2000000
 susceptible = N-(infected+recovered)
+vaccinated = 141000/N
 
 k = 1/15
 b = 1.75
@@ -41,9 +42,9 @@ for t in np.arange(0, 25, steps):
     recovered_list.append(recovered_average)
     time_list.append(t)
 
-    infected_average = infected_average+(slope_infected*steps)
+    infected_average = infected_average+(slope_infected*steps)-vaccinated
     susceptible_average = susceptible_average+(slope_susceptible*steps)
-    recovered_average = recovered_average+(slope_recovered*steps)
+    recovered_average = recovered_average+(slope_recovered*steps)+vaccinated
 
 # Plot the results.
 plt.plot(time_list, infected_list, label='Infected')

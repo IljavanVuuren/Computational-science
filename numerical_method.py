@@ -11,31 +11,46 @@ import numpy as np
 
 # Make lists to store data
 infected_list = []
+susceptible_list = []
+recovered_list = []
 time_list = []
 
 # Initialize variables
-N = 100000
-infected = 0.1*N
-susceptible = N-0.1*N
-b = 0.000000503
-steps = 0.1
+N = 17400000
+infected = 135607
+recovered = 2000000
+susceptible = N-(infected+recovered)
+
+k = 1/15
+b = 1.75
+steps = 1
+
+infected_average = infected/N
+susceptible_average = susceptible/N
+recovered_average = recovered/N
 
 # Makes numerical approximation.
-for t in np.arange(0, 100, steps):
+for t in np.arange(0, 25, steps):
     
-    slope_infected = (1-(1-b)**infected)*susceptible
-    slope_susceptible = -(1-(1-b)**infected)*susceptible
-    infected_average = infected/N
+    slope_infected = (b*susceptible_average*infected_average)-(k*infected_average)
+    slope_susceptible = -b*susceptible_average*infected_average
+    slope_recovered = k*infected_average
+
     infected_list.append(infected_average)
+    susceptible_list.append(susceptible_average)
+    recovered_list.append(recovered_average)
     time_list.append(t)
 
-    infected = infected+(slope_infected*steps)
-    susceptible = susceptible+(slope_susceptible*steps)
+    infected_average = infected_average+(slope_infected*steps)
+    susceptible_average = susceptible_average+(slope_susceptible*steps)
+    recovered_average = recovered_average+(slope_recovered*steps)
 
 # Plot the results.
-plt.plot(time_list, infected_list, label='SIR model')
+plt.plot(time_list, infected_list, label='Infected')
+plt.plot(time_list, susceptible_list, label='Susceptible')
+plt.plot(time_list, recovered_list, label='Recovered')
 plt.xlabel('time')
-plt.ylabel('infected')
+plt.ylabel('Fraction of population')
 plt.legend()
 
 plt.show()

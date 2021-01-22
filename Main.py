@@ -125,6 +125,8 @@ def timestep():
                 vaccined_step += 1
                 amount_vaccined += 1
                 amount_immune += 1
+    elif vaccination_strategy == "none":
+        pass
     else:
         exit("Invalid vaccination strategy.")
 
@@ -145,14 +147,14 @@ if __name__ == "__main__":
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
-        # N, start_infected, vaccination rate and start_immune can be divided by 10 for faster computing.
+        # N, start_infected, start_immune and vaccination rate can be divided by 10 for faster computing.
         N = 17471000
         k = 5
         start_infected = amount_infected = 135607
         infect_chance = 0.35
         start_immune = amount_immune = 2000000
         vaccination_rate = 141000
-        vaccination_strategy = "random"
+        vaccination_strategy = "connections"
         steps = 50
     # Print error message if the amount of given parameters is incorrect.
     else:
@@ -187,12 +189,13 @@ if __name__ == "__main__":
 
     # Show the plots.
     print("Showing results.")
-    plt.plot(infected_per_step, label='Nodes infected per timestep')
-    plt.plot(infected_over_time, label='Total infected during simulation')
-    plt.plot(vaccined_over_time, label='Total vaccinated during simulation')
-    plt.plot(immune_over_time, label='Total immune during simulation')
+    plt.plot(infected_per_step, color='red', label='Nodes infected per timestep')
+    plt.plot(infected_over_time, '--', color='orange', label='Total nodes been infected')
+    plt.plot(immune_over_time, '--', color='royalblue', label='Total nodes immune')
+    plt.plot(vaccined_over_time, '--', color='green', label='Total nodes vaccinated')
+    plt.title('Simulation result for vaccination strategy: ' + vaccination_strategy)
     plt.xlabel('time (steps x 15 days)')
-    plt.ylabel('infected')
+    plt.ylabel('part of population (nodes)')
     plt.legend()
 
     plt.show()

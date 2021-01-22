@@ -146,9 +146,9 @@ if __name__ == "__main__":
     elif len(sys.argv) == 1:
         print("Using default parameters.")
         # N, start_infected, vaccination rate and start_immune can be divided by 10 for faster computing.
-        N = 17400000
+        N = 17471000
         k = 5
-        start_infected = amount_infected = 140833
+        start_infected = amount_infected = 135607
         infect_chance = 0.35
         start_immune = amount_immune = 2000000
         vaccination_rate = 141000
@@ -181,19 +181,18 @@ if __name__ == "__main__":
         immune_over_time.append(amount_immune/N)
 
         if infected_per_step[-1] == 0 and infected_per_step[-2] > 0:
-            print(len(infected_per_step)-1)
-            #print("0 new infections from timestep", len(infected_per_step)-1)
+            print("0 new infections from timestep", len(infected_per_step)-1)
             break
 
 
     # Show the plots.
-    #print("Showing results.")
-    #plt.plot(infected_per_step, label='People infected per timestep')
-    #plt.plot(infected_over_time, label='Total infected during simulation')
-    #plt.plot(vaccined_over_time, label='Total vaccinated during simulation')
-    #plt.plot(immune_over_time, label='Total immune')
-    #plt.xlabel('time (steps x 15 days)')
-    #plt.ylabel('infected')
-    #plt.legend()
+    print("Showing results.")
+    plt.plot(infected_per_step, label='Nodes infected per timestep')
+    plt.plot(infected_over_time, label='Total infected during simulation')
+    plt.plot(vaccined_over_time, label='Total vaccinated during simulation')
+    plt.plot(immune_over_time, label='Total immune during simulation')
+    plt.xlabel('time (steps x 15 days)')
+    plt.ylabel('infected')
+    plt.legend()
 
-    #plt.show()
+    plt.show()

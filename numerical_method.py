@@ -14,6 +14,7 @@ import numpy as np
 infected_list = []
 susceptible_list = []
 recovered_list = []
+infected_timestep= []
 time_list = []
 
 # Initialize variables
@@ -33,7 +34,7 @@ recovered_average = recovered/N
 
 # Makes numerical approximation.
 for t in np.arange(0, 25, steps):
-    
+
     slope_infected = (b*susceptible_average*infected_average)-(k*infected_average)
     slope_susceptible = -b*susceptible_average*infected_average
     slope_recovered = k*infected_average
@@ -41,6 +42,7 @@ for t in np.arange(0, 25, steps):
     infected_list.append(infected_average)
     susceptible_list.append(susceptible_average)
     recovered_list.append(recovered_average)
+    infected_timestep.append(slope_infected*steps)
     time_list.append(t)
 
     infected_average = infected_average+(slope_infected*steps)-vaccinated
@@ -48,11 +50,13 @@ for t in np.arange(0, 25, steps):
     recovered_average = recovered_average+(slope_recovered*steps)+vaccinated
 
 # Plot the results.
-plt.plot(time_list, infected_list, label='Infected')
-plt.plot(time_list, susceptible_list, label='Susceptible')
-plt.plot(time_list, recovered_list, label='Recovered')
-plt.xlabel('time')
-plt.ylabel('Fraction of population')
+plt.plot(time_list, infected_list, '--', color='orange', label='Total amount of infected')
+plt.plot(time_list, susceptible_list, '--', color='purple', label='Total amount of susceptible')
+plt.plot(time_list, recovered_list, '--', color='royalblue', label='Total amount of recovered')
+plt.plot(time_list, infected_timestep, color='red', label='Amount infected per timestep')
+plt.title('Simulation of numerical method (SIR method).')
+plt.xlabel('time (steps x 15 days)')
+plt.ylabel('part of population')
 plt.legend()
 
 plt.show()

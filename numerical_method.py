@@ -1,5 +1,6 @@
 # Project Computational Science
-# Numerical Method for model.
+# Numerical method for model of a network on which a virus spreads
+# while vaccination is applied.
 
 # Group 16
 # Ilja van Vuuren

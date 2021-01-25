@@ -1,5 +1,6 @@
 # Project Computational Science
-# Implementation for model.
+# Implementation for model of a network on which a virus spreads
+# while vaccination is applied.
 
 # Group 16
 # Ilja van Vuuren
@@ -147,7 +148,8 @@ if __name__ == "__main__":
     # Use default parameters if none are given.
     elif len(sys.argv) == 1:
         print("Using default parameters.")
-        # N, start_infected, start_immune and vaccination rate can be divided by 10 for faster computing.
+        # N, start_infected, start_immune and vaccination rate can be divided
+        # by 10 for faster computing.
         N = 17471000
         k = 5
         start_infected = amount_infected = 135607
@@ -159,9 +161,9 @@ if __name__ == "__main__":
     # Print error message if the amount of given parameters is incorrect.
     else:
         exit("Correct way to call program with parameters:\n"
-              "python main.py <nodes> <connectivity> <initial_infected> "
-              "<infection_chance> <initial_immune> <vaccinations_per_step> "
-              "<vaccination_strategy> <steps>")
+             "python main.py <nodes> <connectivity> <initial_infected> "
+             "<infection_chance> <initial_immune> <vaccinations_per_step> "
+             "<vaccination_strategy> <steps>")
 
     # Set parameters independent of input.
     amount_vaccined = 0
@@ -185,7 +187,6 @@ if __name__ == "__main__":
         if infected_per_step[-1] == 0 and infected_per_step[-2] > 0:
             print("0 new infections from timestep", len(infected_per_step)-1)
             break
-
 
     # Show the plots.
     print("Showing results.")

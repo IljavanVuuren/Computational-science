@@ -150,14 +150,14 @@ if __name__ == "__main__":
         print("Using default parameters.")
         # N, start_infected, start_immune and vaccination rate can be divided
         # by 10 for faster computing.
-        N = 17471000
+        N = 1747100#0
         k = 5
-        start_infected = amount_infected = 135607
+        start_infected = amount_infected = 13560#7
         infect_chance = 0.35
-        start_immune = amount_immune = 2000000
-        vaccination_rate = 141000
-        vaccination_strategy = "connections"
-        steps = 50
+        start_immune = amount_immune = 200000#0
+        vaccination_rate = 14100#0
+        vaccination_strategy = "random"
+        steps = 25
     # Print error message if the amount of given parameters is incorrect.
     else:
         exit("Correct way to call program with parameters:\n"
@@ -186,7 +186,6 @@ if __name__ == "__main__":
 
         if infected_per_step[-1] == 0 and infected_per_step[-2] > 0:
             print("0 new infections from timestep", len(infected_per_step)-1)
-            break
 
     # Show the plots.
     print("Showing results.")

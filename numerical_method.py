@@ -33,7 +33,7 @@ recovered_average = recovered/N
 
 # Makes numerical approximation.
 for t in np.arange(0, 25, steps):
-    
+
     slope_infected = (b*susceptible_average*infected_average)-(k*infected_average)
     slope_susceptible = -b*susceptible_average*infected_average
     slope_recovered = k*infected_average

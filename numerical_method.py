@@ -2,6 +2,8 @@
 # Numerical method for model of a network on which a virus spreads
 # while vaccination is applied.
 
+# Run this file in a terminal using "python numerical_method.py".
+
 # Group 16
 # Ilja van Vuuren
 # Nick Moone

@@ -12,14 +12,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Make lists to store data
+# Make lists to store data.
 infected_list = []
 susceptible_list = []
 recovered_list = []
 infected_timestep = []
 time_list = []
 
-# Initialize variables
+# Initialize variables.
 N = 17400000
 infected = 135607
 recovered = 2000000

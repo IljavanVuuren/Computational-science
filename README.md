@@ -2,10 +2,10 @@
 # Implementation for model of a network on which a virus spreads
 # while vaccination is applied.
 
-# Group 16
-# Ilja van Vuuren
-# Nick Moone
-# Willem Breedveld
+#Group 16
+#Ilja van Vuuren
+#Nick Moone
+#Willem Breedveld
 
 There are two files with python code: the network model and the numerical method. 
 

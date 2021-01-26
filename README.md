@@ -1,6 +1,5 @@
 # Project Computational Science
-# Implementation for model of a network on which a virus spreads
-# while vaccination is applied.
+# Implementation for model of a network on which a virus spreads while vaccination is applied.
 
 Group 16:
 Ilja van Vuuren, Nick Moone and Willem Breedveld

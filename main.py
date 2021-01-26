@@ -197,7 +197,7 @@ if __name__ == "__main__":
     plt.plot(vaccined_over_time, '--', color='green', label='Total nodes vaccinated')
     plt.title('Simulation result for vaccination strategy: ' + vaccination_strategy)
     plt.xlabel('time (steps x 15 days)')
-    plt.ylabel('part of population (nodes)')
+    plt.ylabel('normalized population (nodes)')
     plt.legend()
 
     plt.show()

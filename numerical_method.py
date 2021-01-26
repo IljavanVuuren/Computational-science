@@ -58,7 +58,7 @@ plt.plot(time_list, recovered_list, '--', color='royalblue', label='Total amount
 plt.plot(time_list, infected_timestep, color='red', label='Amount infected per timestep')
 plt.title('Simulation of numerical method (SIR method)')
 plt.xlabel('time (steps x 15 days)')
-plt.ylabel('part of population')
+plt.ylabel('normalized population')
 plt.legend()
 
 plt.show()

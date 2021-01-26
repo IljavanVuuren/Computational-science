@@ -45,8 +45,8 @@ for t in range(steps):
     infected_timestep.append(slope_infected)
     time_list.append(t)
 
-    infected_average = infected_average+(slope_infected)-vaccinated
-    susceptible_average = susceptible_average+(slope_susceptible)
+    infected_average = infected_average+(slope_infected)
+    susceptible_average = susceptible_average+(slope_susceptible)-vaccinated
     recovered_average = recovered_average+(slope_recovered)+vaccinated
 
 # Plot the results.

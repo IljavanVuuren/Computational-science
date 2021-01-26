@@ -14,7 +14,7 @@ import numpy as np
 infected_list = []
 susceptible_list = []
 recovered_list = []
-infected_timestep= []
+infected_timestep = []
 time_list = []
 
 # Initialize variables
@@ -31,9 +31,10 @@ infected_average = infected/N
 susceptible_average = susceptible/N
 recovered_average = recovered/N
 
-# Makes numerical approximation.
-for t in np.arange(0, 26, 1):
+steps = 26
 
+# Makes numerical approximation.
+for t in range(steps):
     slope_infected = (b*susceptible_average*infected_average)-(k*infected_average)
     slope_susceptible = -b*susceptible_average*infected_average
     slope_recovered = k*infected_average
@@ -53,7 +54,7 @@ plt.plot(time_list, infected_list, '--', color='orange', label='Total amount of 
 plt.plot(time_list, susceptible_list, '--', color='purple', label='Total amount of susceptible')
 plt.plot(time_list, recovered_list, '--', color='royalblue', label='Total amount of recovered')
 plt.plot(time_list, infected_timestep, color='red', label='Amount infected per timestep')
-plt.title('Simulation of numerical method (SIR method).')
+plt.title('Simulation of numerical method (SIR method)')
 plt.xlabel('time (steps x 15 days)')
 plt.ylabel('part of population')
 plt.legend()

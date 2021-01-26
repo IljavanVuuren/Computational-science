@@ -22,6 +22,7 @@ vaccination_strategy = "random"
 steps = 25
 
 When run the network model will automatically use these parameters but they can also be manually inserted through command line arguments as can be seen in the code.
+To have faster computing the parameters: N, start_infected, start_immune and vaccination rate can be divided by 10.
 
 To gain the numerical method results similar to the ones from the report these parameters were used:
 

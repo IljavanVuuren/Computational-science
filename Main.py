@@ -152,12 +152,12 @@ if __name__ == "__main__":
         print("Using default parameters.")
         # N, start_infected, start_immune and vaccination rate can be divided
         # by 10 for faster computing.
-        N = 1747100#0
+        N = 17471000
         k = 5
-        start_infected = amount_infected = 13560#7
+        start_infected = amount_infected = 135607
         infect_chance = 0.35
-        start_immune = amount_immune = 200000#0
-        vaccination_rate = 14100#0
+        start_immune = amount_immune = 2000000
+        vaccination_rate = 141000
         vaccination_strategy = "random"
         steps = 25
     # Print error message if the amount of given parameters is incorrect.
